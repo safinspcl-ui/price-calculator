@@ -103,17 +103,17 @@ function buildPT() {
   const tbody = PT_MATRIX.map(row => {
     const cells = cols.map(i => {
       const v = row.prices[i];
-      return v == null
-        ? `<td class="na">—</td>`
-        : `<td class="avail"><span class="pt-price">$${v}</span></td>`;
+      if (v == null) return `<td class="na">—</td>`;
+      const full = (v / 0.74).toFixed(2);
+      return `<td class="avail"><span class="sb-disc">$${v}</span><br><span class="sb-full">$${full}</span></td>`;
     }).join('');
     return `<tr><td class="size-lbl">${row.size}</td>${cells}</tr>`;
   }).join('');
   return `<div class="matrix-wrap">
     <div class="matrix-title">
-      Portraithy — цена клиента (скидка 26%)
+      Portraithy — скидка 26%
       <span class="note-badge">NEW · с 1 июля 2025</span>
-      <span class="legend">🟩 доступно &nbsp; 🟧 недоступно</span>
+      <span class="legend">зелёный = цена клиента · серый = без скидки</span>
     </div>
     <table class="matrix"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
   </div>`;

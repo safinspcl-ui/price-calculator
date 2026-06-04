@@ -7,7 +7,9 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; }
-.header { background: #1a1a2e; color: #fff; padding: 16px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+/* ── HEADER ── */
+.header { background: #1a1a2e; color: #fff; padding: 14px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 .header h1 { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
 .tabs { display: flex; background: rgba(255,255,255,0.1); border-radius: 10px; padding: 3px; width: fit-content; margin-bottom: 8px; }
 .tab { padding: 7px 18px; border: none; border-radius: 8px; background: transparent; cursor: pointer; font-weight: 700; font-size: 0.88rem; color: rgba(255,255,255,0.7); transition: all 0.2s; }
@@ -16,31 +18,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .style-tabs.visible { display: flex; }
 .stab { padding: 5px 14px; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 8px; background: transparent; cursor: pointer; font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.7); transition: all 0.2s; }
 .stab.active { background: rgba(255,255,255,0.2); border-color: #fff; color: #fff; }
-.container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 16px; }
 .section { display: none; }
 .section.visible { display: block; }
+
+/* ── MATRIX TABLE (Portraithy) ── */
+.matrix-wrap { background: #fff; border-radius: 14px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.matrix-title { background: #1a1a2e; color: #fff; padding: 12px 18px; font-size: 0.9rem; font-weight: 800; border-radius: 14px 14px 0 0; display: flex; align-items: center; gap: 12px; }
+.matrix-title span { font-size: 0.75rem; opacity: 0.55; font-weight: 400; }
+.note-badge { background: rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+table.matrix { border-collapse: collapse; min-width: 100%; font-size: 0.84rem; }
+table.matrix th { padding: 9px 10px; text-align: center; font-size: 0.75rem; font-weight: 800; background: #f5f6fa; color: #666; border: 1px solid #e8eaf0; white-space: nowrap; }
+table.matrix th.size-col { text-align: left; min-width: 90px; padding-left: 14px; }
+table.matrix td { padding: 8px 10px; text-align: center; border: 1px solid #e8eaf0; font-weight: 700; font-size: 0.85rem; white-space: nowrap; }
+table.matrix td.size-lbl { text-align: left; padding-left: 14px; font-weight: 800; background: #f8f9ff; color: #1a1a2e; font-size: 0.82rem; border-right: 2px solid #d0d4e8; }
+table.matrix td.avail { background: #e8f5e9; color: #1b5e20; }
+table.matrix td.avail.hi { background: #c8e6c9; }
+table.matrix td.na { background: #fff3e0; color: #ccc; font-weight: 400; font-size: 0.8rem; }
+table.matrix tr:hover td.avail { filter: brightness(0.95); }
+
+/* ── VERTICAL TABLE (Sambanis) ── */
 .size-block { background: #fff; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .size-header { background: #1a1a2e; color: #fff; padding: 10px 16px; display: flex; align-items: baseline; gap: 10px; }
 .size-cm { font-size: 1.05rem; font-weight: 800; }
 .size-in { font-size: 0.78rem; opacity: 0.6; }
 .delivery-badge { margin-left: auto; font-size: 0.72rem; background: rgba(255,255,255,0.15); padding: 3px 9px; border-radius: 6px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-th { background: #f5f6fa; padding: 8px 12px; text-align: left; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #888; border-bottom: 1px solid #eee; }
-th.right { text-align: right; }
-td { padding: 9px 12px; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
-td.right { text-align: right; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #fafbff; }
+table.vtable { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+table.vtable th { background: #f5f6fa; padding: 8px 12px; text-align: left; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #888; border-bottom: 1px solid #eee; }
+table.vtable th.right { text-align: right; }
+table.vtable td { padding: 9px 12px; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+table.vtable td.right { text-align: right; }
+table.vtable tr:last-child td { border-bottom: none; }
+table.vtable tr:hover td { background: #fafbff; }
 .fig-badge { display: inline-block; background: #e8eaf0; border-radius: 6px; padding: 2px 8px; font-size: 0.8rem; font-weight: 700; color: #444; }
 .price-disc { font-weight: 800; color: #1a1a2e; font-size: 0.95rem; }
 .price-full { color: #999; text-decoration: line-through; font-size: 0.85rem; }
 .saving { display: inline-block; background: #e8f5e9; color: #2e7d32; font-size: 0.72rem; font-weight: 700; padding: 2px 6px; border-radius: 5px; margin-left: 4px; }
-.del-sep { background: #f8f9ff; }
-.del-sep td { padding: 6px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #aaa; border-bottom: 1px solid #eee; }
-.no-disc { color: #999; font-style: italic; font-size: 0.82rem; }
-@media print {
-  .header { position: static; }
-  .size-block { break-inside: avoid; }
+.del-sep td { padding: 6px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #aaa; border-bottom: 1px solid #eee; background: #f8f9ff; }
+
+@media (max-width: 600px) {
+  table.matrix th, table.matrix td { padding: 6px 6px; font-size: 0.75rem; }
+  table.matrix th.size-col, table.matrix td.size-lbl { min-width: 70px; padding-left: 8px; }
 }
 </style>
 </head>
@@ -60,387 +79,184 @@ tr:hover td { background: #fafbff; }
 </div>
 
 <div class="container">
-  <div id="sec-pt" class="section visible"></div>
-  <div id="sec-sb-imp" class="section"></div>
-  <div id="sec-sb-rea" class="section"></div>
-  <div id="sec-sb-ren" class="section"></div>
+  <div id="sec-pt"      class="section visible"></div>
+  <div id="sec-sb-imp"  class="section"></div>
+  <div id="sec-sb-rea"  class="section"></div>
+  <div id="sec-sb-ren"  class="section"></div>
 </div>
 
 <script>
-// ── PORTRAITHY DATA ────────────────────────────────────────────────────────
-// Each size: { cm, inches, groups: [{ delivery, rows: [{ fig, disc, full }] }] }
-// full=null means only one price available
-const PT_DATA = [
-  { cm:'20×25', inches:"8'×10'", groups:[
-    { del:'подрамник / посылка', rows:[
-      { fig:'0 фигур', disc:248.36, full:335.62 },
-      { fig:'1 питомец', disc:248.36, full:335.62 },
-    ]}
-  ]},
-  { cm:'25×35', inches:"10'×14'", groups:[
-    { del:'подрамник / посылка', rows:[
-      { fig:'0 фигур', disc:280.90, full:379.59 },
-      { fig:'1 фигура', disc:280.90, full:379.59 },
-      { fig:'2 фигуры', disc:318.87, full:430.91 },
-    ]}
-  ]},
-  { cm:'30×40', inches:"12'×16'", groups:[
-    { del:'подрамник / посылка', rows:[
-      { fig:'0 фигур', disc:296.51, full:400.69 },
-      { fig:'1 фигура', disc:296.51, full:400.69 },
-      { fig:'2 фигуры', disc:320.95, full:433.72 },
-    ]}
-  ]},
-  { cm:'40×50', inches:"16'×20'", groups:[
-    { del:'подрамник / посылка', rows:[
-      { fig:'0 фигур', disc:345.96, full:467.52 },
-      { fig:'1 фигура', disc:345.96, full:467.52 },
-      { fig:'2 фигуры', disc:367.64, full:496.81 },
-      { fig:'3 фигуры', disc:392.90, full:530.95 },
-      { fig:'4 фигуры', disc:417.90, full:564.73 },
-    ]}
-  ]},
-  { cm:'50×60', inches:"20'×24'", groups:[
-    { del:'подрамник / посылка', rows:[
-      { fig:'0 фигур', disc:389.35, full:526.15 },
-      { fig:'1 фигура', disc:400.20, full:540.81 },
-      { fig:'2 фигуры', disc:411.03, full:555.45 },
-      { fig:'3 фигуры', disc:427.31, full:577.44 },
-      { fig:'4 фигуры', disc:438.15, full:592.10 },
-      { fig:'5 фигур', disc:448.99, full:606.75 },
-      { fig:'6 фигур', disc:465.27, full:628.75 },
-      { fig:'7 фигур', disc:476.11, full:643.39 },
-    ]}
-  ]},
-  { cm:'60×70', inches:"24'×28'", groups:[
-    { del:'подрамник / EMS', rows:[
-      { fig:'0 фигур', disc:497.80, full:672.70 },
-      { fig:'1 фигура', disc:508.65, full:687.36 },
-      { fig:'2 фигуры', disc:519.49, full:702.02 },
-      { fig:'3 фигуры', disc:535.77, full:724.01 },
-      { fig:'4 фигуры', disc:546.61, full:738.66 },
-      { fig:'5 фигур', disc:557.46, full:753.32 },
-      { fig:'6 фигур', disc:573.71, full:775.29 },
-      { fig:'7 фигур', disc:584.56, full:789.95 },
-      { fig:'8 фигур', disc:611.68, full:826.59 },
-      { fig:'9 фигур', disc:622.53, full:841.26 },
-    ]}
-  ]},
-  { cm:'70×80', inches:"28'×32'", groups:[
-    { del:'подрамник / EMS', rows:[
-      { fig:'0 фигур', disc:584.56, full:789.95 },
-      { fig:'1 фигура', disc:595.41, full:804.61 },
-      { fig:'2 фигуры', disc:606.25, full:819.26 },
-      { fig:'3 фигуры', disc:622.53, full:841.26 },
-      { fig:'4 фигуры', disc:633.37, full:855.90 },
-      { fig:'5 фигур', disc:644.21, full:870.56 },
-      { fig:'6 фигур', disc:660.49, full:892.55 },
-      { fig:'7 фигур', disc:671.33, full:907.20 },
-      { fig:'8 фигур', disc:698.44, full:943.84 },
-      { fig:'9 фигур', disc:709.28, full:958.49 },
-      { fig:'10 фигур', disc:736.41, full:995.15 },
-      { fig:'11 фигур', disc:747.24, full:1009.79 },
-      { fig:'12 фигур', disc:758.09, full:1024.45 },
-    ]}
-  ]},
-  { cm:'80×90', inches:"32'×35'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:715.80, full:967.30 },
-      { fig:'1 фигура', disc:726.63, full:981.93 },
-      { fig:'2 фигуры', disc:737.48, full:996.59 },
-      { fig:'3 фигуры', disc:753.74, full:1018.57 },
-      { fig:'4 фигуры', disc:764.59, full:1033.23 },
-      { fig:'5 фигур', disc:775.43, full:1047.88 },
-      { fig:'6 фигур', disc:791.70, full:1069.86 },
-      { fig:'7 фигур', disc:802.55, full:1084.53 },
-      { fig:'8 фигур', disc:829.66, full:1121.16 },
-      { fig:'9 фигур', disc:840.51, full:1135.82 },
-      { fig:'10 фигур', disc:867.62, full:1172.46 },
-      { fig:'11 фигур', disc:878.47, full:1187.12 },
-      { fig:'12 фигур', disc:889.31, full:1201.77 },
-    ]},
-    { del:'подрамник / UPS', rows:[
-      { fig:'0 фигур', disc:823.17, full:1112.39 },
-      { fig:'1 фигура', disc:834.01, full:1127.04 },
-      { fig:'2 фигуры', disc:844.86, full:1141.70 },
-      { fig:'3 фигуры', disc:861.12, full:1163.68 },
-      { fig:'4 фигуры', disc:871.96, full:1178.33 },
-      { fig:'5 фигур', disc:882.81, full:1192.99 },
-      { fig:'6 фигур', disc:899.08, full:1214.97 },
-      { fig:'7 фигур', disc:909.93, full:1229.63 },
-      { fig:'8 фигур', disc:937.05, full:1266.28 },
-      { fig:'9 фигур', disc:947.89, full:1280.93 },
-      { fig:'10 фигур', disc:974.99, full:1317.56 },
-      { fig:'11 фигур', disc:985.84, full:1332.22 },
-      { fig:'12 фигур', disc:996.69, full:1346.88 },
-    ]}
-  ]},
-  { cm:'80×100', inches:"32'×39'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:835.07, full:1128.47 },
-      { fig:'1 фигура', disc:845.93, full:1143.15 },
-      { fig:'2 фигуры', disc:856.77, full:1157.80 },
-      { fig:'3 фигуры', disc:873.04, full:1179.78 },
-      { fig:'4 фигуры', disc:883.89, full:1194.45 },
-      { fig:'5 фигур', disc:894.73, full:1209.09 },
-      { fig:'6 фигур', disc:911.00, full:1231.08 },
-      { fig:'7 фигур', disc:921.84, full:1245.73 },
-      { fig:'8 фигур', disc:948.96, full:1282.38 },
-      { fig:'9 фигур', disc:959.81, full:1297.04 },
-      { fig:'10 фигур', disc:986.92, full:1333.68 },
-      { fig:'11 фигур', disc:997.76, full:1348.32 },
-      { fig:'12 фигур', disc:1008.61, full:1362.99 },
-    ]},
-    { del:'подрамник / UPS', rows:[
-      { fig:'0 фигур', disc:942.46, full:1273.59 },
-      { fig:'1 фигура', disc:953.31, full:1288.26 },
-      { fig:'2 фигуры', disc:964.15, full:1302.90 },
-      { fig:'3 фигуры', disc:980.43, full:1324.90 },
-      { fig:'4 фигуры', disc:991.27, full:1339.56 },
-      { fig:'5 фигур', disc:1002.12, full:1354.22 },
-      { fig:'6 фигур', disc:1018.38, full:1376.19 },
-      { fig:'7 фигур', disc:1029.22, full:1390.84 },
-      { fig:'8 фигур', disc:1056.34, full:1427.49 },
-      { fig:'9 фигур', disc:1067.19, full:1442.15 },
-      { fig:'10 фигур', disc:1094.30, full:1478.79 },
-      { fig:'11 фигур', disc:1105.15, full:1493.44 },
-      { fig:'12 фигур', disc:1115.99, full:1508.10 },
-    ]}
-  ]},
-  { cm:'100×120', inches:"39'×47'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:996.69, full:1346.88 },
-      { fig:'1 фигура', disc:1007.53, full:1361.53 },
-      { fig:'2 фигуры', disc:1018.38, full:1376.19 },
-      { fig:'3 фигуры', disc:1034.65, full:1398.17 },
-      { fig:'4 фигуры', disc:1045.49, full:1412.83 },
-      { fig:'5 фигур', disc:1056.34, full:1427.49 },
-      { fig:'6 фигур', disc:1072.61, full:1449.47 },
-      { fig:'7 фигур', disc:1083.46, full:1464.13 },
-      { fig:'8 фигур', disc:1110.56, full:1500.76 },
-      { fig:'9 фигур', disc:1121.41, full:1515.42 },
-      { fig:'10 фигур', disc:1148.52, full:1552.06 },
-      { fig:'11 фигур', disc:1159.37, full:1566.72 },
-      { fig:'12 фигур', disc:1170.21, full:1581.36 },
-    ]}
-  ]},
-  { cm:'120×140', inches:"48'×55'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:1191.91, full:1610.69 },
-      { fig:'1 фигура', disc:1202.76, full:1625.35 },
-      { fig:'2 фигуры', disc:1213.59, full:1639.99 },
-      { fig:'3 фигуры', disc:1229.87, full:1661.98 },
-      { fig:'4 фигуры', disc:1240.71, full:1676.64 },
-      { fig:'5 фигур', disc:1251.55, full:1691.29 },
-      { fig:'6 фигур', disc:1267.83, full:1713.28 },
-      { fig:'7 фигур', disc:1278.67, full:1727.93 },
-      { fig:'8 фигур', disc:1305.78, full:1764.57 },
-      { fig:'9 фигур', disc:1316.63, full:1779.23 },
-      { fig:'10 фигур', disc:1343.74, full:1815.86 },
-      { fig:'11 фигур', disc:1354.59, full:1830.53 },
-      { fig:'12 фигур', disc:1365.43, full:1845.17 },
-    ]}
-  ]},
-  { cm:'140×180', inches:"55'×70'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:null, full:2416.76 },
-      { fig:'1 фигура', disc:null, full:2431.42 },
-      { fig:'2 фигуры', disc:null, full:2446.07 },
-      { fig:'3 фигуры', disc:null, full:2468.07 },
-      { fig:'4 фигуры', disc:null, full:2482.71 },
-      { fig:'5 фигур', disc:null, full:2497.37 },
-      { fig:'6 фигур', disc:null, full:2519.35 },
-      { fig:'7 фигур', disc:null, full:2534.00 },
-      { fig:'8 фигур', disc:null, full:2570.64 },
-      { fig:'9 фигур', disc:null, full:2585.30 },
-      { fig:'10 фигур', disc:null, full:2621.96 },
-      { fig:'11 фигур', disc:null, full:2636.60 },
-      { fig:'12 фигур', disc:null, full:2651.26 },
-    ]}
-  ]},
-  { cm:'140×220', inches:"55'×85'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:null, full:2929.71 },
-      { fig:'1 фигура', disc:null, full:2944.37 },
-      { fig:'2 фигуры', disc:null, full:2959.03 },
-      { fig:'3 фигуры', disc:null, full:2981.02 },
-      { fig:'4 фигуры', disc:null, full:2995.67 },
-      { fig:'5 фигур', disc:null, full:3010.33 },
-      { fig:'6 фигур', disc:null, full:3032.31 },
-      { fig:'7 фигур', disc:null, full:3046.96 },
-      { fig:'8 фигур', disc:null, full:3083.60 },
-      { fig:'9 фигур', disc:null, full:3098.27 },
-      { fig:'10 фигур', disc:null, full:3134.90 },
-      { fig:'11 фигур', disc:null, full:3149.56 },
-      { fig:'12 фигур', disc:null, full:3164.22 },
-    ]}
-  ]},
-  { cm:'140×254', inches:"55'×100'", groups:[
-    { del:'тубус / EMS', rows:[
-      { fig:'0 фигур', disc:null, full:3369.40 },
-      { fig:'1 фигура', disc:null, full:3384.04 },
-      { fig:'2 фигуры', disc:null, full:3398.70 },
-      { fig:'3 фигуры', disc:null, full:3420.69 },
-      { fig:'4 фигуры', disc:null, full:3435.36 },
-      { fig:'5 фигур', disc:null, full:3450.00 },
-      { fig:'6 фигур', disc:null, full:3471.98 },
-      { fig:'7 фигур', disc:null, full:3486.64 },
-      { fig:'8 фигур', disc:null, full:3523.29 },
-      { fig:'9 фигур', disc:null, full:3537.93 },
-      { fig:'10 фигур', disc:null, full:3574.58 },
-      { fig:'11 фигур', disc:null, full:3589.23 },
-      { fig:'12 фигур', disc:null, full:3609.89 },
-    ]}
-  ]},
+// ── PORTRAITHY MATRIX DATA ─────────────────────────────────────────────────
+// prices = client prices (with 26% discount), null = not available
+// NEW pricing effective after July 1, 2025
+const PT_MATRIX = [
+  { size:'13×18',  note:'',           prices:[120, null,null,null,null,null,null,null,null,null,null,null,null] },
+  { size:'15×20',  note:'',           prices:[160, null,null,null,null,null,null,null,null,null,null,null,null] },
+  { size:'20×25',  note:'(1 питомец)',prices:[200, 200, null,null,null,null,null,null,null,null,null,null,null] },
+  { size:'25×35',  note:'',           prices:[250, 350, 370, null,null,null,null,null,null,null,null,null,null] },
+  { size:'30×40',  note:'',           prices:[310, 410, 430, null,null,null,null,null,null,null,null,null,null] },
+  { size:'40×50',  note:'',           prices:[360, 460, 480, 500, 520, null,null,null,null,null,null,null,null] },
+  { size:'50×60',  note:'',           prices:[470, 490, 510, 530, 550, 570, 590, 610, null,null,null,null,null] },
+  { size:'60×70',  note:'',           prices:[580, 600, 620, 640, 660, 680, 700, 720, 740, 760, null,null,null] },
+  { size:'70×80',  note:'',           prices:[650, 670, 690, 710, 730, 750, 770, 790, 810, 830, 850, 870, 890] },
+  { size:'80×90',  note:'',           prices:[850, 870, 890, 910, 930, 950, 970, 990,1010,1030,1050,1070,1090] },
+  { size:'80×100', note:'',           prices:[900, 920, 940, 960, 980,1000,1020,1040,1060,1080,1100,1120,1140] },
+  { size:'100×120',note:'',           prices:[1200,1220,1240,1260,1280,1300,1320,1340,1360,1380,1400,1420,1440] },
+  { size:'120×140',note:'',           prices:[1400,1420,1440,1460,1480,1500,1520,1540,1560,1580,1600,1620,1640] },
 ];
+const MAX_FIGS = 12;
+
+function buildMatrix() {
+  const cols = Array.from({length: MAX_FIGS + 1}, (_, i) => i);
+  const thead = `<thead><tr>
+    <th class="size-col">Размер</th>
+    ${cols.map(i => `<th>${i}&thinsp;Ф</th>`).join('')}
+  </tr></thead>`;
+
+  const tbody = PT_MATRIX.map(row => {
+    const cells = cols.map(i => {
+      const v = row.prices[i];
+      if (v == null) return `<td class="na">—</td>`;
+      const hi = i === 0 ? '' : ' hi'; // slightly darker for non-zero figs... actually let's use differently
+      return `<td class="avail">$${v}</td>`;
+    }).join('');
+    const noteTxt = row.note ? ` <small style="font-weight:400;opacity:.6">${row.note}</small>` : '';
+    return `<tr><td class="size-lbl">${row.size}${noteTxt}</td>${cells}</tr>`;
+  }).join('');
+
+  return `<div class="matrix-wrap">
+    <div class="matrix-title">
+      Portraithy — цены для клиента (со скидкой 26%)
+      <span class="note-badge">NEW · с 1 июля 2025</span>
+      <span style="margin-left:auto">🟩 доступно &nbsp; 🟧 недоступно</span>
+    </div>
+    <table class="matrix"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
+  </div>`;
+}
 
 // ── SAMBANIS DATA ──────────────────────────────────────────────────────────
-// Helper: build rows from disc[] and full[] arrays, starting at fig=1
 function sbRows(discs, fulls) {
-  return discs.map((d, i) => ({ fig: (i+1) + ' ' + ['фигура','фигуры','фигуры','фигуры','фигур','фигур','фигур','фигур','фигур'][i], disc: d, full: fulls[i] }));
+  const labels = ['1 фигура','2 фигуры','3 фигуры','4 фигуры','5 фигур','6 фигур','7 фигур','8 фигур','9 фигур'];
+  return discs.map((d, i) => ({ fig: labels[i] || `${i+1} фигур`, disc: d, full: fulls[i] }));
 }
+const fmtP = v => v != null ? '$' + v.toFixed(2) : '—';
+function saving(d,f){ if(!d||!f) return ''; return `<span class="saving">−${Math.round((1-d/f)*100)}%</span>`; }
 
 const SB_DATA = {
   imp: [
-    { cm:'25×35', inches:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([288.85,318.85],[431.12,475.90]) }]},
-    { cm:'30×40', inches:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([331.80,361.80,391.80],[495.22,540.00,584.78]) }]},
-    { cm:'40×50', inches:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([385.50,415.50,445.50,475.50],[575.37,620.15,664.93,709.70]) }]},
-    { cm:'50×60', inches:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([449.93,479.93,509.93,539.93,569.93],[671.54,716.31,761.09,805.87,850.64]) }]},
-    { cm:'60×70', inches:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([557.30,587.30,617.30,647.30,677.30,707.30,737.30],[831.79,876.57,921.34,966.12,1010.90,1055.67,1100.45]) }]},
-    { cm:'70×80', inches:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([621.73,651.73,681.73,711.73,741.73,771.73,801.73,831.73,861.73],[927.96,972.73,1017.51,1062.28,1107.06,1151.84,1196.61,1241.39,1286.16]) }]},
-    { cm:'80×90', inches:"32'×35'", groups:[
-      { del:'тубус / EMS', rows: sbRows([804.27,834.27,864.27,894.27,924.27,954.27,984.27,1014.27,1044.27],[1200.40,1245.18,1289.96,1334.73,1379.51,1424.28,1469.06,1513.84,1558.61]) },
+    { cm:'25×35', in:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([288.85,318.85],[431.12,475.90]) }]},
+    { cm:'30×40', in:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([331.80,361.80,391.80],[495.22,540.00,584.78]) }]},
+    { cm:'40×50', in:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([385.50,415.50,445.50,475.50],[575.37,620.15,664.93,709.70]) }]},
+    { cm:'50×60', in:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([449.93,479.93,509.93,539.93,569.93],[671.54,716.31,761.09,805.87,850.64]) }]},
+    { cm:'60×70', in:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([557.30,587.30,617.30,647.30,677.30,707.30,737.30],[831.79,876.57,921.34,966.12,1010.90,1055.67,1100.45]) }]},
+    { cm:'70×80', in:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([621.73,651.73,681.73,711.73,741.73,771.73,801.73,831.73,861.73],[927.96,972.73,1017.51,1062.28,1107.06,1151.84,1196.61,1241.39,1286.16]) }]},
+    { cm:'80×90', in:"32'×35'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([804.27,834.27,864.27,894.27,924.27,954.27,984.27,1014.27,1044.27],[1200.40,1245.18,1289.96,1334.73,1379.51,1424.28,1469.06,1513.84,1558.61]) },
       { del:'подрамник / UPS', rows: sbRows([911.66,941.66,971.66,1001.66,1031.66,1061.66,1091.66,1121.66,1151.66],[1360.69,1405.46,1450.24,1495.01,1539.79,1584.57,1629.34,1674.12,1718.90]) },
     ]},
-    { cm:'80×100', inches:"32'×39'", groups:[
-      { del:'тубус / EMS', rows: sbRows([933.13,963.13,993.13,1023.13,1053.13,1083.13,1113.13,1143.13,1173.13],[1392.73,1437.51,1482.28,1527.06,1571.84,1616.61,1661.39,1706.16,1750.94]) },
+    { cm:'80×100', in:"32'×39'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([933.13,963.13,993.13,1023.13,1053.13,1083.13,1113.13,1143.13,1173.13],[1392.73,1437.51,1482.28,1527.06,1571.84,1616.61,1661.39,1706.16,1750.94]) },
       { del:'подрамник / UPS', rows: sbRows([1040.52,1070.52,1100.52,1130.52,1160.52,1190.52,1220.52,1250.52,1280.52],[1553.01,1597.79,1642.57,1687.34,1732.12,1776.90,1821.67,1866.45,1911.22]) },
     ]},
-    { cm:'100×120', inches:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1137.16,1167.16,1197.16,1227.16,1257.16,1287.16,1317.16,1347.16,1377.16],[1697.25,1742.03,1786.81,1831.58,1876.36,1921.13,1965.91,2010.69,2055.46]) }]},
-    { cm:'120×140', inches:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1427.07,1457.07,1487.07,1517.07,1547.07,1577.07,1607.07,1637.07,1667.07],[2129.96,2174.73,2219.51,2264.28,2309.06,2353.84,2398.61,2443.39,2488.16]) }]},
-    { cm:'140×180', inches:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2146.52,2232.43,2318.33,2404.23,2490.00,2576.05,2661.95,2747.85,2833.76],[3203.76,3331.99,3460.20,3588.41,3716.42,3844.85,3973.06,4101.27,4229.50]) }]},
-    { cm:'140×220', inches:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([2576.05,2661.95,2747.85,2833.76,2919.67,3005.57,3091.47,3177.38,3263.28],[3844.85,3973.06,4101.27,4229.50,4357.71,4489.92,4614.13,4742.36,4870.57]) }]},
-    { cm:'140×254', inches:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3005.57,3091.47,3177.38,3263.28,3349.18,3435.08,3520.99,3606.89,3692.80],[4485.92,4614.13,4742.36,4870.57,4998.78,5126.99,5255.21,5383.42,5511.64]) }]},
+    { cm:'100×120', in:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1137.16,1167.16,1197.16,1227.16,1257.16,1287.16,1317.16,1347.16,1377.16],[1697.25,1742.03,1786.81,1831.58,1876.36,1921.13,1965.91,2010.69,2055.46]) }]},
+    { cm:'120×140', in:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1427.07,1457.07,1487.07,1517.07,1547.07,1577.07,1607.07,1637.07,1667.07],[2129.96,2174.73,2219.51,2264.28,2309.06,2353.84,2398.61,2443.39,2488.16]) }]},
+    { cm:'140×180', in:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2146.52,2232.43,2318.33,2404.23,2490.00,2576.05,2661.95,2747.85,2833.76],[3203.76,3331.99,3460.20,3588.41,3716.42,3844.85,3973.06,4101.27,4229.50]) }]},
+    { cm:'140×220', in:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([2576.05,2661.95,2747.85,2833.76,2919.67,3005.57,3091.47,3177.38,3263.28],[3844.85,3973.06,4101.27,4229.50,4357.71,4489.92,4614.13,4742.36,4870.57]) }]},
+    { cm:'140×254', in:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3005.57,3091.47,3177.38,3263.28,3349.18,3435.08,3520.99,3606.89,3692.80],[4485.92,4614.13,4742.36,4870.57,4998.78,5126.99,5255.21,5383.42,5511.64]) }]},
   ],
   rea: [
-    { cm:'25×35', inches:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([364.02,439.18],[543.31,655.50]) }]},
-    { cm:'30×40', inches:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([406.97,482.14,557.30],[607.42,719.61,831.79]) }]},
-    { cm:'40×50', inches:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([535.83,610.99,686.15,761.33],[799.74,911.93,1024.11,1136.31]) }]},
-    { cm:'50×60', inches:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([643.21,718.37,793.54,868.70,943.87],[960.01,1072.20,1184.39,1296.57,1408.76]) }]},
-    { cm:'60×70', inches:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([793.54,868.70,943.87,1019.04,1094.20,1169.37,1244.53],[1184.39,1296.57,1408.76,1520.96,1633.14,1745.33,1857.51]) }]},
-    { cm:'70×80', inches:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([857.97,933.13,1008.30,1083.46,1158.63,1233.80,1308.96,1384.13,1459.29],[1280.55,1392.73,1504.92,1617.11,1729.30,1841.49,1953.67,2065.86,2178.05]) }]},
-    { cm:'80×90', inches:"32'×35'", groups:[
-      { del:'тубус / EMS', rows: sbRows([997.56,1072.72,1147.89,1223.06,1298.23,1373.39,1448.55,1523.72,1598.89],[1488.90,1601.08,1713.27,1825.46,1937.65,2049.84,2162.02,2274.21,2386.40]) },
+    { cm:'25×35', in:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([364.02,439.18],[543.31,655.50]) }]},
+    { cm:'30×40', in:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([406.97,482.14,557.30],[607.42,719.61,831.79]) }]},
+    { cm:'40×50', in:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([535.83,610.99,686.15,761.33],[799.74,911.93,1024.11,1136.31]) }]},
+    { cm:'50×60', in:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([643.21,718.37,793.54,868.70,943.87],[960.01,1072.20,1184.39,1296.57,1408.76]) }]},
+    { cm:'60×70', in:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([793.54,868.70,943.87,1019.04,1094.20,1169.37,1244.53],[1184.39,1296.57,1408.76,1520.96,1633.14,1745.33,1857.51]) }]},
+    { cm:'70×80', in:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([857.97,933.13,1008.30,1083.46,1158.63,1233.80,1308.96,1384.13,1459.29],[1280.55,1392.73,1504.92,1617.11,1729.30,1841.49,1953.67,2065.86,2178.05]) }]},
+    { cm:'80×90', in:"32'×35'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([997.56,1072.72,1147.89,1223.06,1298.23,1373.39,1448.55,1523.72,1598.89],[1488.90,1601.08,1713.27,1825.46,1937.65,2049.84,2162.02,2274.21,2386.40]) },
       { del:'подрамник / UPS', rows: sbRows([1104.94,1180.10,1255.27,1330.44,1405.60,1480.77,1555.93,1631.10,1706.27],[1649.17,1761.35,1873.54,1985.73,2097.91,2210.11,2322.29,2434.48,2546.67]) },
     ]},
-    { cm:'80×100', inches:"32'×39'", groups:[
-      { del:'тубус / EMS', rows: sbRows([1083.46,1158.63,1233.80,1308.96,1384.13,1459.29,1534.46,1609.63,1684.79],[1617.11,1729.30,1841.49,1953.67,2065.86,2178.05,2290.24,2402.43,2514.61]) },
+    { cm:'80×100', in:"32'×39'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([1083.46,1158.63,1233.80,1308.96,1384.13,1459.29,1534.46,1609.63,1684.79],[1617.11,1729.30,1841.49,1953.67,2065.86,2178.05,2290.24,2402.43,2514.61]) },
       { del:'подрамник / UPS', rows: sbRows([1190.84,1266.01,1341.17,1416.35,1491.50,1566.67,1641.84,1717.01,1792.17],[1777.38,1889.57,2001.75,2113.95,2226.12,2338.32,2450.51,2562.70,2674.88]) },
     ]},
-    { cm:'100×120', inches:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1266.01,1341.17,1416.35,1491.50,1566.67,1641.84,1717.01,1792.17,1867.34],[1889.57,2001.75,2113.95,2226.12,2338.32,2450.51,2562.70,2674.88,2787.07]) }]},
-    { cm:'120×140', inches:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1577.41,1652.58,1727.74,1802.91,1878.08,1953.24,2028.40,2103.57,2178.74],[2354.35,2466.53,2578.72,2690.91,2803.10,2915.29,3027.47,3139.66,3251.85]) }]},
-    { cm:'140×180', inches:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2361.29,2436.46,2511.62,2586.78,2661.95,2737.12,2812.28,2887.45,2962.61],[3524.31,3636.50,3748.68,3860.87,3973.06,4085.25,4197.44,4309.62,4421.81]) }]},
-    { cm:'140×220', inches:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([2790.80,2865.97,2941.14,3016.31,3091.47,3166.63,3241.80,3316.97,3392.14],[4165.38,4277.56,4389.76,4501.95,4614.13,4726.32,4838.51,4950.70,5062.89]) }]},
-    { cm:'140×254', inches:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3327.71,3402.87,3478.04,3553.21,3628.36,3703.54,3778.70,3853.87,3929.03],[4966.73,5078.91,5191.10,5303.30,5415.47,5527.67,5639.85,5752.05,5864.22]) }]},
+    { cm:'100×120', in:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1266.01,1341.17,1416.35,1491.50,1566.67,1641.84,1717.01,1792.17,1867.34],[1889.57,2001.75,2113.95,2226.12,2338.32,2450.51,2562.70,2674.88,2787.07]) }]},
+    { cm:'120×140', in:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1577.41,1652.58,1727.74,1802.91,1878.08,1953.24,2028.40,2103.57,2178.74],[2354.35,2466.53,2578.72,2690.91,2803.10,2915.29,3027.47,3139.66,3251.85]) }]},
+    { cm:'140×180', in:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2361.29,2436.46,2511.62,2586.78,2661.95,2737.12,2812.28,2887.45,2962.61],[3524.31,3636.50,3748.68,3860.87,3973.06,4085.25,4197.44,4309.62,4421.81]) }]},
+    { cm:'140×220', in:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([2790.80,2865.97,2941.14,3016.31,3091.47,3166.63,3241.80,3316.97,3392.14],[4165.38,4277.56,4389.76,4501.95,4614.13,4726.32,4838.51,4950.70,5062.89]) }]},
+    { cm:'140×254', in:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3327.71,3402.87,3478.04,3553.21,3628.36,3703.54,3778.70,3853.87,3929.03],[4966.73,5078.91,5191.10,5303.30,5415.47,5527.67,5639.85,5752.05,5864.22]) }]},
   ],
   ren: [
-    { cm:'25×35', inches:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([449.93,546.57],[671.53,815.77]) }]},
-    { cm:'30×40', inches:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([482.14,578.78,675.43],[719.61,863.85,1008.10]) }]},
-    { cm:'40×50', inches:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([578.78,675.43,771.97,868.70],[863.85,1008.10,1152.19,1296.57]) }]},
-    { cm:'50×60', inches:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([686.15,782.80,879.44,976.09,1072.72],[1024.11,1168.36,1312.60,1456.85,1601.08]) }]},
-    { cm:'60×70', inches:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([804.27,900.92,997.56,1094.20,1190.84,1287.49,1384.13],[1200.41,1344.65,1488.90,1633.14,1777.38,1921.62,2065.86]) }]},
-    { cm:'70×80', inches:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([933.13,1029.77,1126.42,1223.06,1319.70,1416.35,1512.99,1609.63,1706.27],[1392.73,1536.97,1681.22,1825.46,1969.70,2113.95,2258.19,2402.43,2546.67]) }]},
-    { cm:'80×90', inches:"32'×35'", groups:[
-      { del:'тубус / EMS', rows: sbRows([1072.72,1169.37,1266.01,1362.65,1459.29,1555.93,1652.58,1749.22,1845.86],[1601.08,1745.33,1889.57,2033.81,2178.05,2322.29,2466.53,2610.77,2755.02]) },
+    { cm:'25×35', in:"10'×14'", groups:[{ del:'подрамник / посылка', rows: sbRows([449.93,546.57],[671.53,815.77]) }]},
+    { cm:'30×40', in:"12'×16'", groups:[{ del:'подрамник / посылка', rows: sbRows([482.14,578.78,675.43],[719.61,863.85,1008.10]) }]},
+    { cm:'40×50', in:"16'×20'", groups:[{ del:'подрамник / посылка', rows: sbRows([578.78,675.43,771.97,868.70],[863.85,1008.10,1152.19,1296.57]) }]},
+    { cm:'50×60', in:"20'×24'", groups:[{ del:'подрамник / посылка', rows: sbRows([686.15,782.80,879.44,976.09,1072.72],[1024.11,1168.36,1312.60,1456.85,1601.08]) }]},
+    { cm:'60×70', in:"24'×28'", groups:[{ del:'подрамник / EMS', rows: sbRows([804.27,900.92,997.56,1094.20,1190.84,1287.49,1384.13],[1200.41,1344.65,1488.90,1633.14,1777.38,1921.62,2065.86]) }]},
+    { cm:'70×80', in:"28'×32'", groups:[{ del:'подрамник / EMS', rows: sbRows([933.13,1029.77,1126.42,1223.06,1319.70,1416.35,1512.99,1609.63,1706.27],[1392.73,1536.97,1681.22,1825.46,1969.70,2113.95,2258.19,2402.43,2546.67]) }]},
+    { cm:'80×90', in:"32'×35'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([1072.72,1169.37,1266.01,1362.65,1459.29,1555.93,1652.58,1749.22,1845.86],[1601.08,1745.33,1889.57,2033.81,2178.05,2322.29,2466.53,2610.77,2755.02]) },
       { del:'подрамник / UPS', rows: sbRows([1180.10,1276.75,1373.39,1470.03,1566.67,1663.32,1759.96,1856.60,1953.24],[1761.35,1905.59,2049.84,2194.07,2338.32,2482.56,2626.81,2771.05,2915.29]) },
     ]},
-    { cm:'80×100', inches:"32'×39'", groups:[
-      { del:'тубус / EMS', rows: sbRows([1201.58,1298.23,1394.87,1491.50,1588.15,1684.79,1781.44,1878.08,1974.72],[1793.41,1937.65,2081.90,2226.12,2370.37,2514.61,2658.86,2803.10,2947.34]) },
+    { cm:'80×100', in:"32'×39'", groups:[
+      { del:'тубус / EMS',     rows: sbRows([1201.58,1298.23,1394.87,1491.50,1588.15,1684.79,1781.44,1878.08,1974.72],[1793.41,1937.65,2081.90,2226.12,2370.37,2514.61,2658.86,2803.10,2947.34]) },
       { del:'подрамник / UPS', rows: sbRows([1308.96,1405.60,1502.25,1598.89,1695.54,1792.17,1888.82,1985.46,2082.10],[1953.67,2097.91,2242.16,2386.40,2530.65,2674.88,2819.13,2963.37,3107.61]) },
     ]},
-    { cm:'100×120', inches:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1384.13,1480.77,1577.41,1674.06,1770.69,1867.34,1963.98,2060.62,2157.27],[2065.86,2210.11,2354.35,2498.60,2642.82,2787.07,2931.31,3075.55,3219.80]) }]},
-    { cm:'120×140', inches:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1706.27,1802.91,1899.55,1996.19,2092.84,2189.47,2286.12,2382.76,2479.41],[2546.67,2690.91,2835.15,2979.39,3123.64,3267.87,3412.12,3556.36,3700.61]) }]},
-    { cm:'140×180', inches:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2565.31,2661.95,2758.59,2855.24,2951.88,3048.52,3145.16,3241.80,3338.44],[3828.82,3973.06,4117.30,4261.55,4405.79,4550.03,4694.27,4838.51,4982.75]) }]},
-    { cm:'140×220', inches:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([3069.99,3166.63,3263.28,3359.92,3456.56,3553.21,3649.84,3746.49,3843.13],[4582.08,4726.32,4870.57,5014.81,5159.05,5303.30,5447.52,5591.77,5736.01]) }]},
-    { cm:'140×254', inches:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3585.41,3682.06,3778.70,3875.35,3971.99,4068.63,4165.27,4261.91,4358.56],[5351.36,5495.61,5639.85,5784.10,5928.34,6072.58,6216.82,6361.06,6505.31]) }]},
+    { cm:'100×120', in:"39'×47'", groups:[{ del:'тубус / EMS', rows: sbRows([1384.13,1480.77,1577.41,1674.06,1770.69,1867.34,1963.98,2060.62,2157.27],[2065.86,2210.11,2354.35,2498.60,2642.82,2787.07,2931.31,3075.55,3219.80]) }]},
+    { cm:'120×140', in:"48'×55'", groups:[{ del:'тубус / EMS', rows: sbRows([1706.27,1802.91,1899.55,1996.19,2092.84,2189.47,2286.12,2382.76,2479.41],[2546.67,2690.91,2835.15,2979.39,3123.64,3267.87,3412.12,3556.36,3700.61]) }]},
+    { cm:'140×180', in:"55'×70'", groups:[{ del:'тубус / EMS', rows: sbRows([2565.31,2661.95,2758.59,2855.24,2951.88,3048.52,3145.16,3241.80,3338.44],[3828.82,3973.06,4117.30,4261.55,4405.79,4550.03,4694.27,4838.51,4982.75]) }]},
+    { cm:'140×220', in:"55'×85'", groups:[{ del:'тубус / EMS', rows: sbRows([3069.99,3166.63,3263.28,3359.92,3456.56,3553.21,3649.84,3746.49,3843.13],[4582.08,4726.32,4870.57,5014.81,5159.05,5303.30,5447.52,5591.77,5736.01]) }]},
+    { cm:'140×254', in:"55'×100'", groups:[{ del:'тубус / EMS', rows: sbRows([3585.41,3682.06,3778.70,3875.35,3971.99,4068.63,4165.27,4261.91,4358.56],[5351.36,5495.61,5639.85,5784.10,5928.34,6072.58,6216.82,6361.06,6505.31]) }]},
   ],
 };
 
-// ── RENDER ─────────────────────────────────────────────────────────────────
-const $ = id => document.getElementById(id);
-const fmtP = v => v != null ? '$' + v.toFixed(2) : '—';
-
-function saving(disc, full) {
-  if (!disc || !full) return '';
-  const pct = Math.round((1 - disc/full) * 100);
-  return `<span class="saving">−${pct}%</span>`;
-}
-
-function renderData(data, discLabel) {
+function renderVertical(data, discLabel) {
   return data.map(size => {
     const groupsHTML = size.groups.map((g, gi) => {
-      const sepRow = size.groups.length > 1
-        ? `<tr class="del-sep"><td colspan="3">${g.del}</td></tr>` : '';
-      const rows = g.rows.map(r => {
-        const hasDisc = r.disc != null;
-        return `<tr>
-          <td><span class="fig-badge">${r.fig}</span></td>
-          <td class="right">
-            ${hasDisc
-              ? `<span class="price-disc">${fmtP(r.disc)}</span> ${saving(r.disc, r.full)}`
-              : `<span class="no-disc">нет данных</span>`}
-          </td>
-          <td class="right"><span class="price-full">${fmtP(r.full)}</span></td>
-        </tr>`;
-      }).join('');
-      return sepRow + rows;
+      const sep = size.groups.length > 1 ? `<tr class="del-sep"><td colspan="3">${g.del}</td></tr>` : '';
+      const rows = g.rows.map(r => `<tr>
+        <td><span class="fig-badge">${r.fig}</span></td>
+        <td class="right"><span class="price-disc">${fmtP(r.disc)}</span> ${saving(r.disc,r.full)}</td>
+        <td class="right"><span class="price-full">${fmtP(r.full)}</span></td>
+      </tr>`).join('');
+      return sep + rows;
     }).join('');
-
     const oneDel = size.groups.length === 1 ? size.groups[0].del : '';
-    return `
-      <div class="size-block">
-        <div class="size-header">
-          <span class="size-cm">${size.cm} см</span>
-          <span class="size-in">${size.inches}"</span>
-          ${oneDel ? `<span class="delivery-badge">${oneDel}</span>` : ''}
-        </div>
-        <table>
-          <thead><tr>
-            <th>Фигуры</th>
-            <th class="right">${discLabel}</th>
-            <th class="right">Без скидки</th>
-          </tr></thead>
-          <tbody>${groupsHTML}</tbody>
-        </table>
-      </div>`;
+    return `<div class="size-block">
+      <div class="size-header">
+        <span class="size-cm">${size.cm} см</span>
+        <span class="size-in">${size.in}"</span>
+        ${oneDel ? `<span class="delivery-badge">${oneDel}</span>` : ''}
+      </div>
+      <table class="vtable">
+        <thead><tr><th>Фигуры</th><th class="right">${discLabel}</th><th class="right">Без скидки</th></tr></thead>
+        <tbody>${groupsHTML}</tbody>
+      </table>
+    </div>`;
   }).join('');
 }
 
-// Build once
-$('sec-pt').innerHTML      = renderData(PT_DATA,  'Цена клиенту (−26%)');
-$('sec-sb-imp').innerHTML  = renderData(SB_DATA.imp, 'Цена клиенту (−33%)');
-$('sec-sb-rea').innerHTML  = renderData(SB_DATA.rea, 'Цена клиенту (−33%)');
-$('sec-sb-ren').innerHTML  = renderData(SB_DATA.ren, 'Цена клиенту (−33%)');
+// ── BUILD ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+$('sec-pt').innerHTML     = buildMatrix();
+$('sec-sb-imp').innerHTML = renderVertical(SB_DATA.imp, 'Цена клиенту (−33%)');
+$('sec-sb-rea').innerHTML = renderVertical(SB_DATA.rea, 'Цена клиенту (−33%)');
+$('sec-sb-ren').innerHTML = renderVertical(SB_DATA.ren, 'Цена клиенту (−33%)');
 
-// ── NAVIGATION ─────────────────────────────────────────────────────────────
+// ── NAV ────────────────────────────────────────────────────────────────────
 let shop = 'pt', style = 'imp';
-
 function setShop(s) {
   shop = s;
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i===(s==='pt'?0:1)));
-  $('style-tabs').classList.toggle('visible', s === 'sb');
-  updateVisible();
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===(s==='pt'?0:1)));
+  $('style-tabs').classList.toggle('visible', s==='sb');
+  show();
 }
 function setStyle(s) {
   style = s;
-  document.querySelectorAll('.stab').forEach((b, i) => b.classList.toggle('active', ['imp','rea','ren'][i]===s));
-  updateVisible();
+  document.querySelectorAll('.stab').forEach((b,i) => b.classList.toggle('active', ['imp','rea','ren'][i]===s));
+  show();
 }
-function updateVisible() {
-  ['sec-pt','sec-sb-imp','sec-sb-rea','sec-sb-ren'].forEach(id => $('id'.replace('id', id) || id).classList.remove('visible'));
+function show() {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
-  const id = shop === 'pt' ? 'sec-pt' : `sec-sb-${style}`;
-  $(id).classList.add('visible');
+  $(shop==='pt' ? 'sec-pt' : `sec-sb-${style}`).classList.add('visible');
 }
 </script>
 </body>

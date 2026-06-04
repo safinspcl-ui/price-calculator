@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расчет стоимости нестандартного размера для клиента</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  padding: 16px;
+  min-height: 100vh;
+}
+.container { max-width: 500px; margin: 0 auto; }
+h1 { text-align: center; font-size: 1.25rem; margin-bottom: 18px; font-weight: 800; }
+.tabs {
+  display: flex;
+  background: #e2e5ec;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+.tab {
+  flex: 1; padding: 10px; border: none; border-radius: 9px;
+  background: transparent; cursor: pointer; font-weight: 700; font-size: 0.95rem;
+  color: #666; transition: all 0.2s;
+}
+.tab.active { background: #1a1a2e; color: #fff; }
+.card {
+  background: #fff; border-radius: 14px; padding: 18px;
+  margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.sec-label {
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #999; margin-bottom: 8px;
+}
+.seg { display: flex; gap: 6px; }
+.seg-btn {
+  flex: 1; padding: 9px 6px; border: 2px solid #e2e5ec; border-radius: 10px;
+  background: #fff; cursor: pointer; font-size: 0.82rem; font-weight: 700;
+  color: #555; transition: all 0.15s; text-align: center;
+}
+.seg-btn.active { border-color: #1a1a2e; background: #1a1a2e; color: #fff; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fg { margin-bottom: 14px; }
+.fg:last-child { margin-bottom: 0; }
+label {
+  display: block; font-size: 0.73rem; font-weight: 800; color: #777;
+  margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+input[type=number] {
+  width: 100%; padding: 11px 13px; border: 2px solid #e2e5ec; border-radius: 10px;
+  font-size: 1.05rem; font-weight: 600; outline: none; color: #1a1a2e;
+  transition: border-color 0.2s; background: #fafafa;
+}
+input[type=number]:focus { border-color: #1a1a2e; background: #fff; }
+.result-card {
+  background: linear-gradient(145deg, #1a1a2e 0%, #0f3460 100%);
+  border-radius: 14px; padding: 22px; color: #fff; margin-bottom: 12px;
+}
+.res-label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; margin-bottom: 3px; }
+.res-price { font-size: 2.6rem; font-weight: 900; line-height: 1; margin-bottom: 5px; }
+.res-sub { font-size: 0.8rem; opacity: 0.55; margin-bottom: 18px; }
+.bd { background: rgba(255,255,255,0.11); border-radius: 10px; padding: 14px; }
+.bd-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.87rem; padding: 3px 0; opacity: 0.82; }
+.bd-row .nm { flex: 1; padding-right: 8px; }
+.bd-row.total { border-top: 1px solid rgba(255,255,255,0.2); margin-top: 8px; padding-top: 10px; font-weight: 800; font-size: 1rem; opacity: 1; }
+.empty { text-align: center; color: #bbb; font-size: 0.9rem; padding: 36px 0; }
+.warn { background: #fff8e1; border: 1.5px solid #ffc107; border-radius: 10px; padding: 11px 14px; font-size: 0.82rem; color: #7a5f00; margin-top: 10px; }
+.ratio-pill {
+  display: inline-block; background: rgba(255,255,255,0.15); border-radius: 6px;
+  padding: 2px 7px; font-size: 0.76rem; font-weight: 700; margin-left: 6px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Расчет стоимости нестандартного размера для клиента</h1>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setShop('portraithy')">Portraithy</button>
+    <button class="tab" onclick="setShop('sambanis')">Sambanis</button>
+  </div>
+
+  <div id="style-card" class="card" style="display:none">
+    <div class="sec-label">Стиль</div>
+    <div class="seg" id="style-seg">
+      <button class="seg-btn active" onclick="setStyle('impressionism')">Импрессионизм</button>
+      <button class="seg-btn" onclick="setStyle('realism')">Реализм</button>
+      <button class="seg-btn" onclick="setStyle('renaissance')">Ренессанс</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row2" style="margin-bottom:14px">
+      <div class="fg" style="margin-bottom:0">
+        <label>Ширина, см</label>
+        <input type="number" id="inp-w" placeholder="напр. 76" min="1" oninput="calc()">
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>Высота, см</label>
+        <input type="number" id="inp-h" placeholder="напр. 91" min="1" oninput="calc()">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Количество фигур</label>
+      <input type="number" id="inp-n" value="1" min="0" oninput="calc()">
+    </div>
+    <div id="del-sec" style="display:none">
+      <div class="sec-label" style="margin-top:4px">Доставка / упаковка</div>
+      <div class="seg" id="del-seg"></div>
+      <div id="frame-warn" style="display:none;margin-top:8px" class="warn" style="margin-bottom:0">
+        🖼 Размер превышает 80×100 см — только тубус
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fg" style="margin-bottom:0">
+      <label>Доп. доработка художника, $</label>
+      <input type="number" id="inp-extra" placeholder="0" min="0" step="0.01" oninput="calc()">
+    </div>
+  </div>
+
+  <div id="result-area">
+    <div class="card empty">Введите размеры выше</div>
+  </div>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+
+const PT = [
+  { w:20,  h:25,  ex:30, opts:[{ lb:'подрамник/посылка', p:[248.36,248.36] }] },
+  { w:25,  h:35,  ex:30, opts:[{ lb:'подрамник/посылка', p:[280.90,280.90,318.87] }] },
+  { w:30,  h:40,  ex:30, opts:[{ lb:'подрамник/посылка', p:[296.51,296.51,320.95] }] },
+  { w:40,  h:50,  ex:30, opts:[{ lb:'подрамник/посылка', p:[345.96,345.96,367.64,392.90,417.90] }] },
+  { w:50,  h:60,  ex:30, opts:[{ lb:'подрамник/посылка', p:[389.35,400.20,411.03,427.31,438.15,448.99,465.27,476.11] }] },
+  { w:60,  h:70,  ex:30, opts:[{ lb:'подрамник/EMS',    p:[497.80,508.65,519.49,535.77,546.61,557.46,573.71,584.56,611.68,622.53] }] },
+  { w:70,  h:80,  ex:12, opts:[{ lb:'подрамник/EMS',    p:[584.56,595.41,606.25,622.53,633.37,644.21,660.49,671.33,698.44,709.28,736.41,747.24,758.09] }] },
+  { w:80,  h:90,  ex:12, opts:[
+    { lb:'тубус/EMS',     p:[715.80,726.63,737.48,753.74,764.59,775.43,791.70,802.55,829.66,840.51,867.62,878.47,889.31] },
+    { lb:'подрамник/UPS', p:[823.17,834.01,844.86,861.12,871.96,882.81,899.08,909.93,937.05,947.89,974.99,985.84,996.69] }
+  ]},
+  { w:80,  h:100, ex:12, opts:[
+    { lb:'тубус/EMS',     p:[835.07,845.93,856.77,873.04,883.89,894.73,911.00,921.84,948.96,959.81,986.92,997.76,1008.61] },
+    { lb:'подрамник/UPS', p:[942.46,953.31,964.15,980.43,991.27,1002.12,1018.38,1029.22,1056.34,1067.19,1094.30,1105.15,1115.99] }
+  ]},
+  { w:100, h:120, ex:12, opts:[{ lb:'тубус/EMS', p:[996.69,1007.53,1018.38,1034.65,1045.49,1056.34,1072.61,1083.46,1110.56,1121.41,1148.52,1159.37,1170.21] }] },
+  { w:120, h:140, ex:12, opts:[{ lb:'тубус/EMS', p:[1191.91,1202.76,1213.59,1229.87,1240.71,1251.55,1267.83,1278.67,1305.78,1316.63,1343.74,1354.59,1365.43] }] },
+  { w:140, h:180, ex:12, opts:[{ lb:'тубус/EMS', p:[2416.76,2431.42,2446.07,2468.07,2482.71,2497.37,2519.35,2534.00,2570.64,2585.30,2621.96,2636.60,2651.26] }] },
+  { w:140, h:220, ex:12, opts:[{ lb:'тубус/EMS', p:[2929.71,2944.37,2959.03,2981.02,2995.67,3010.33,3032.31,3046.96,3083.60,3098.27,3134.90,3149.56,3164.22] }] },
+  { w:140, h:254, ex:12, opts:[{ lb:'тубус/EMS', p:[3369.40,3384.04,3398.70,3420.69,3435.36,3450.00,3471.98,3486.64,3523.29,3537.93,3574.58,3589.23,3609.89] }] },
+];
+
+// Sambanis: prices[0]=null (no 0-figure), prices[1..N] = discounted prices
+const SB = {
+  impressionism: { ex:30, sizes:[
+    { w:25,  h:35,  opts:[{ lb:'подрамник/посылка', p:[null,288.85,374.76] }] },
+    { w:30,  h:40,  opts:[{ lb:'подрамник/посылка', p:[null,331.80,417.71,503.61] }] },
+    { w:40,  h:50,  opts:[{ lb:'подрамник/посылка', p:[null,385.50,471.40,557.30,643.21] }] },
+    { w:50,  h:60,  opts:[{ lb:'подрамник/посылка', p:[null,449.93,535.83,621.73,707.63,793.54] }] },
+    { w:60,  h:70,  opts:[{ lb:'подрамник/EMS',    p:[null,557.30,643.21,729.11,815.01,900.92,986.82,1072.72] }] },
+    { w:70,  h:80,  opts:[{ lb:'подрамник/EMS',    p:[null,621.73,707.63,793.54,879.44,965.34,1051.24,1137.16,1223.06,1308.96] }] },
+    { w:80,  h:90,  opts:[
+      { lb:'тубус/EMS',     p:[null,804.27,890.18,976.09,1061.99,1147.89,1233.80,1319.70,1405.60,1491.50] },
+      { lb:'подрамник/UPS', p:[null,911.66,997.56,1083.46,1169.37,1255.27,1341.17,1427.07,1512.99,1598.89] }
+    ]},
+    { w:80,  h:100, opts:[
+      { lb:'тубус/EMS',     p:[null,933.13,1019.04,1104.94,1190.84,1276.75,1362.65,1448.55,1534.46,1620.36] },
+      { lb:'подрамник/UPS', p:[null,1040.52,1126.42,1212.32,1298.23,1384.13,1470.03,1555.93,1641.84,1727.74] }
+    ]},
+    { w:100, h:120, opts:[{ lb:'тубус/EMS', p:[null,1137.16,1223.06,1308.96,1394.87,1481.49,1566.67,1652.58,1738.49,1824.39] }] },
+    { w:120, h:140, opts:[{ lb:'тубус/EMS', p:[null,1427.07,1512.99,1598.89,1684.79,1770.69,1856.60,1942.50,2028.40,2114.32] }] },
+    { w:140, h:180, opts:[{ lb:'тубус/EMS', p:[null,2146.52,2232.43,2318.33,2404.23,2490.00,2576.05,2661.95,2747.85,2833.76] }] },
+    { w:140, h:220, opts:[{ lb:'тубус/EMS', p:[null,2576.05,2661.95,2747.85,2833.76,2919.67,3005.57,3091.47,3177.38,3263.28] }] },
+    { w:140, h:254, opts:[{ lb:'тубус/EMS', p:[null,3005.57,3091.47,3177.38,3263.28,3349.18,3435.08,3520.99,3606.89,3692.80] }] },
+  ]},
+  realism: { ex:70, sizes:[
+    { w:25,  h:35,  opts:[{ lb:'подрамник/посылка', p:[null,364.02,439.18] }] },
+    { w:30,  h:40,  opts:[{ lb:'подрамник/посылка', p:[null,406.97,482.14,557.30] }] },
+    { w:40,  h:50,  opts:[{ lb:'подрамник/посылка', p:[null,535.83,610.99,686.15,761.33] }] },
+    { w:50,  h:60,  opts:[{ lb:'подрамник/посылка', p:[null,643.21,718.37,793.54,868.70,943.87] }] },
+    { w:60,  h:70,  opts:[{ lb:'подрамник/EMS',    p:[null,793.54,868.70,943.87,1019.04,1094.20,1169.37,1244.53] }] },
+    { w:70,  h:80,  opts:[{ lb:'подрамник/EMS',    p:[null,857.97,933.13,1008.30,1083.46,1158.63,1233.80,1308.96,1384.13,1459.29] }] },
+    { w:80,  h:90,  opts:[
+      { lb:'тубус/EMS',     p:[null,997.56,1072.72,1147.89,1223.06,1298.23,1373.39,1448.55,1523.72,1598.89] },
+      { lb:'подрамник/UPS', p:[null,1104.94,1180.10,1255.27,1330.44,1405.60,1480.77,1555.93,1631.10,1706.27] }
+    ]},
+    { w:80,  h:100, opts:[
+      { lb:'тубус/EMS',     p:[null,1083.46,1158.63,1233.80,1308.96,1384.13,1459.29,1534.46,1609.63,1684.79] },
+      { lb:'подрамник/UPS', p:[null,1190.84,1266.01,1341.17,1416.35,1491.50,1566.67,1641.84,1717.01,1792.17] }
+    ]},
+    { w:100, h:120, opts:[{ lb:'тубус/EMS', p:[null,1266.01,1341.17,1416.35,1491.50,1566.67,1641.84,1717.01,1792.17,1867.34] }] },
+    { w:120, h:140, opts:[{ lb:'тубус/EMS', p:[null,1577.41,1652.58,1727.74,1802.91,1878.08,1953.24,2028.40,2103.57,2178.74] }] },
+    { w:140, h:180, opts:[{ lb:'тубус/EMS', p:[null,2361.29,2436.46,2511.62,2586.78,2661.95,2737.12,2812.28,2887.45,2962.61] }] },
+    { w:140, h:220, opts:[{ lb:'тубус/EMS', p:[null,2790.80,2865.97,2941.14,3016.31,3091.47,3166.63,3241.80,3316.97,3392.14] }] },
+    { w:140, h:254, opts:[{ lb:'тубус/EMS', p:[null,3327.71,3402.87,3478.04,3553.21,3628.36,3703.54,3778.70,3853.87,3929.03] }] },
+  ]},
+  renaissance: { ex:80, sizes:[
+    { w:25,  h:35,  opts:[{ lb:'подрамник/посылка', p:[null,449.93,546.57] }] },
+    { w:30,  h:40,  opts:[{ lb:'подрамник/посылка', p:[null,482.14,578.78,675.43] }] },
+    { w:40,  h:50,  opts:[{ lb:'подрамник/посылка', p:[null,578.78,675.43,771.97,868.70] }] },
+    { w:50,  h:60,  opts:[{ lb:'подрамник/посылка', p:[null,686.15,782.80,879.44,976.09,1072.72] }] },
+    { w:60,  h:70,  opts:[{ lb:'подрамник/EMS',    p:[null,804.27,900.92,997.56,1094.20,1190.84,1287.49,1384.13] }] },
+    { w:70,  h:80,  opts:[{ lb:'подрамник/EMS',    p:[null,933.13,1029.77,1126.42,1223.06,1319.70,1416.35,1512.99,1609.63,1706.27] }] },
+    { w:80,  h:90,  opts:[
+      { lb:'тубус/EMS',     p:[null,1072.72,1169.37,1266.01,1362.65,1459.29,1555.93,1652.58,1749.22,1845.86] },
+      { lb:'подрамник/UPS', p:[null,1180.10,1276.75,1373.39,1470.03,1566.67,1663.32,1759.96,1856.60,1953.24] }
+    ]},
+    { w:80,  h:100, opts:[
+      { lb:'тубус/EMS',     p:[null,1201.58,1298.23,1394.87,1491.50,1588.15,1684.79,1781.44,1878.08,1974.72] },
+      { lb:'подрамник/UPS', p:[null,1308.96,1405.60,1502.25,1598.89,1695.54,1792.17,1888.82,1985.46,2082.10] }
+    ]},
+    { w:100, h:120, opts:[{ lb:'тубус/EMS', p:[null,1384.13,1480.77,1577.41,1674.06,1770.69,1867.34,1963.98,2060.62,2157.27] }] },
+    { w:120, h:140, opts:[{ lb:'тубус/EMS', p:[null,1706.27,1802.91,1899.55,1996.19,2092.84,2189.47,2286.12,2382.76,2479.41] }] },
+    { w:140, h:180, opts:[{ lb:'тубус/EMS', p:[null,2565.31,2661.95,2758.59,2855.24,2951.88,3048.52,3145.16,3241.80,3338.44] }] },
+    { w:140, h:220, opts:[{ lb:'тубус/EMS', p:[null,3069.99,3166.63,3263.28,3359.92,3456.56,3553.21,3649.84,3746.49,3843.13] }] },
+    { w:140, h:254, opts:[{ lb:'тубус/EMS', p:[null,3585.41,3682.06,3778.70,3875.35,3971.99,4068.63,4165.27,4261.91,4358.56] }] },
+  ]},
+};
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+const st = { shop:'portraithy', style:'impressionism', delIdx:0 };
+
+// ── UI SETTERS ───────────────────────────────────────────────────────────────
+function setShop(s) {
+  st.shop = s; st.delIdx = 0;
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===(s==='portraithy'?0:1)));
+  document.getElementById('style-card').style.display = s==='sambanis' ? 'block' : 'none';
+  calc();
+}
+function setStyle(s) {
+  st.style = s; st.delIdx = 0;
+  document.querySelectorAll('#style-seg .seg-btn').forEach((b,i) =>
+    b.classList.toggle('active', ['impressionism','realism','renaissance'][i]===s));
+  calc();
+}
+function setDel(i) {
+  st.delIdx = i;
+  document.querySelectorAll('#del-seg .seg-btn').forEach((b,j) => b.classList.toggle('active', j===i));
+  calc();
+}
+
+// ── LOGIC ────────────────────────────────────────────────────────────────────
+function dist(w, h, sw, sh) {
+  return Math.min(Math.abs(w-sw)+Math.abs(h-sh), Math.abs(w-sh)+Math.abs(h-sw));
+}
+
+function findClosest(sizes, w, h) {
+  let best=-1, bestD=Infinity, bestP=-Infinity;
+  sizes.forEach((s,i) => {
+    const d = dist(w, h, s.w, s.h);
+    const p = s.opts[0].p.find(x => x!==null) || 0;
+    if (d < bestD || (d===bestD && p > bestP)) { best=i; bestD=d; bestP=p; }
+  });
+  return best;
+}
+
+function computeFigCost(prices, n, extra) {
+  const minFig = prices[0]===null ? 1 : 0;
+  const maxFig = prices.length - 1;
+  const base = prices[minFig];
+  const clN = Math.max(n, minFig);
+  const tableN = Math.min(clN, maxFig);
+  const extraFigs = Math.max(0, clN - maxFig);
+  const figCost = (prices[tableN] - base) + extraFigs * extra;
+  return { base, figCost, minFig, maxFig, extraFigs, tableN };
+}
+
+function $ (id) { return document.getElementById(id); }
+const fmt = v => '$' + v.toFixed(2);
+
+function calc() {
+  const w = parseFloat($('inp-w').value);
+  const h = parseFloat($('inp-h').value);
+  const n = parseInt($('inp-n').value) || 0;
+
+  if (!w || !h || w<=0 || h<=0) {
+    $('result-area').innerHTML = '<div class="card empty">Введите размеры выше</div>';
+    $('del-sec').style.display = 'none';
+    return;
+  }
+
+  const sizes = st.shop==='portraithy' ? PT : SB[st.style].sizes;
+  const extra  = st.shop==='portraithy' ? null : SB[st.style].ex;
+
+  const idx = findClosest(sizes, w, h);
+  const sz  = sizes[idx];
+  const multiOpt = sz.opts.length > 1;
+
+  // Подрамник разрешён только если размер ≤ 80×100
+  const canFrame = Math.min(w,h) <= 80 && Math.max(w,h) <= 100;
+
+  const delSec = $('del-sec');
+  const delSeg = $('del-seg');
+  const frameWarn = $('frame-warn');
+  if (multiOpt) {
+    delSec.style.display = 'block';
+    if (!canFrame) {
+      // Форсируем тубус (idx=0), скрываем кнопки выбора
+      st.delIdx = 0;
+      delSeg.style.display = 'none';
+      frameWarn.style.display = 'block';
+    } else {
+      delSeg.style.display = 'flex';
+      frameWarn.style.display = 'none';
+      delSeg.innerHTML = sz.opts.map((o,i) =>
+        `<button class="seg-btn ${i===st.delIdx?'active':''}" onclick="setDel(${i})">${o.lb}</button>`
+      ).join('');
+    }
+  } else {
+    delSec.style.display = 'none';
+    st.delIdx = 0;
+  }
+
+  const opt = sz.opts[Math.min(st.delIdx, sz.opts.length-1)];
+  const sizeExtra = st.shop==='portraithy' ? sz.ex : extra;
+  const { base, figCost, minFig, maxFig, extraFigs, tableN } = computeFigCost(opt.p, n, sizeExtra);
+
+  const ratio = (w + h) / (sz.w + sz.h);
+  const scaledBase = base * ratio;
+  const artistExtra = parseFloat($('inp-extra').value) || 0;
+  const total = scaledBase + figCost + artistExtra;
+
+  // Breakdown labels
+  const baseLabel = minFig===0 ? '0 фигур (полотно)' : '1 фигура (база)';
+  let figLabel = '';
+  if (n < minFig) {
+    figLabel = `минимум ${minFig} фигур — приведено к ${minFig}`;
+  } else if (figCost === 0) {
+    figLabel = 'без доп. фигур';
+  } else if (extraFigs === 0) {
+    figLabel = `${n} фиг. по прайсу: ${fmt(opt.p[tableN])} − ${fmt(base)}`;
+  } else {
+    const tablepart = tableN>minFig ? `${tableN} фиг. из прайса (${fmt(opt.p[tableN])}−${fmt(base)})` : '';
+    figLabel = `${tablepart}${tablepart?' + ':''}${extraFigs} доп. × ${fmt(sizeExtra)}`;
+  }
+
+  const ratioDir = ratio > 1 ? '▲' : ratio < 1 ? '▼' : '=';
+  const ratioColor = ratio > 1 ? '#4caf50' : ratio < 1 ? '#f44336' : '#fff';
+
+  let warn = '';
+  if (extraFigs > 0) {
+    warn = `<div class="warn">⚠ ${extraFigs} фигур(ы) сверх прайса — добавлено ${fmt(extraFigs*sizeExtra)} (${extraFigs} × ${fmt(sizeExtra)})</div>`;
+  }
+
+  $('result-area').innerHTML = `
+    <div class="result-card">
+      <div class="res-label">К оплате клиентом</div>
+      <div class="res-price">${fmt(total)}</div>
+      <div class="res-sub">
+        Ближайший стандарт: <strong>${sz.w}×${sz.h} см</strong> | ${opt.lb}
+        <span class="ratio-pill" style="color:${ratioColor}">${ratioDir} ×${ratio.toFixed(3)}</span>
+      </div>
+      <div class="bd">
+        <div class="bd-row">
+          <span class="nm">База (${baseLabel} при ${sz.w}×${sz.h})</span>
+          <span>${fmt(base)}</span>
+        </div>
+        <div class="bd-row">
+          <span class="nm">× коэф. (${w}+${h}) / (${sz.w}+${sz.h})</span>
+          <span>${fmt(scaledBase)}</span>
+        </div>
+        ${figCost!==0 ? `<div class="bd-row">
+          <span class="nm">Фигуры: ${figLabel}</span>
+          <span>+${fmt(figCost)}</span>
+        </div>` : ''}
+        ${artistExtra>0 ? `<div class="bd-row">
+          <span class="nm">Доп. доработка художника</span>
+          <span>+${fmt(artistExtra)}</span>
+        </div>` : ''}
+        <div class="bd-row total">
+          <span>ИТОГО</span>
+          <span>${fmt(total)}</span>
+        </div>
+      </div>
+    </div>
+    ${warn}
+  `;
+}
+</script>
+</body>
+</html>

@@ -77,42 +77,57 @@ table.matrix tr:hover td.size-lbl { background: #f0f2ff; }
 
 <script>
 // ── PORTRAITHY MATRIX ──────────────────────────────────────────────────────
-// Client prices (with 26% discount). null = unavailable.
-// Columns 0Ф–12Ф. Effective July 1, 2025.
-const PT_MATRIX = [
-  { size:'20×25',  prices:[200, 200, null,null,null,null,null,null,null,null,null,null,null] },
-  { size:'25×35',  prices:[250, 350, 370, null,null,null,null,null,null,null,null,null,null] },
-  { size:'30×40',  prices:[310, 410, 430, null,null,null,null,null,null,null,null,null,null] },
-  { size:'40×50',  prices:[360, 460, 480, 500, 520, null,null,null,null,null,null,null,null] },
-  { size:'50×60',  prices:[470, 490, 510, 530, 550, 570, 590, 610, null,null,null,null,null] },
-  { size:'60×70',  prices:[580, 600, 620, 640, 660, 680, 700, 720, 740, 760, null,null,null] },
-  { size:'70×80',  prices:[650, 670, 690, 710, 730, 750, 770, 790, 810, 830, 850, 870, 890] },
-  { size:'80×90',  prices:[850, 870, 890, 910, 930, 950, 970, 990,1010,1030,1050,1070,1090] },
-  { size:'80×100', prices:[900, 920, 940, 960, 980,1000,1020,1040,1060,1080,1100,1120,1140] },
-  { size:'100×120',prices:[1200,1220,1240,1260,1280,1300,1320,1340,1360,1380,1400,1420,1440] },
-  { size:'120×140',prices:[1400,1420,1440,1460,1480,1500,1520,1540,1560,1580,1600,1620,1640] },
+// Prices from spreadsheet: d = client price (−26%), f = full price
+// Columns 0Ф–12Ф. Rows with same size = two delivery options (rowspan).
+function ptC(d, f) { return {d, f}; }
+const N = null;
+
+const PT_ROWS = [
+  { size:'20×25',  del:'подрамник/посылка', cells:[ptC(248.36,335.62),ptC(248.36,335.62),N,N,N,N,N,N,N,N,N,N,N] },
+  { size:'25×35',  del:'подрамник/посылка', cells:[ptC(280.90,379.59),ptC(280.90,379.59),ptC(318.87,430.91),N,N,N,N,N,N,N,N,N,N] },
+  { size:'30×40',  del:'подрамник/посылка', cells:[ptC(296.51,400.69),ptC(296.51,400.69),ptC(320.95,433.72),N,N,N,N,N,N,N,N,N,N] },
+  { size:'40×50',  del:'подрамник/посылка', cells:[ptC(345.96,467.52),ptC(345.96,467.52),ptC(367.64,496.81),ptC(392.90,530.95),ptC(417.90,564.73),N,N,N,N,N,N,N,N] },
+  { size:'50×60',  del:'подрамник/посылка', cells:[ptC(389.35,526.15),ptC(400.20,540.81),ptC(411.03,555.45),ptC(427.31,577.44),ptC(438.15,592.10),ptC(448.99,606.75),ptC(465.27,628.75),ptC(476.11,643.39),N,N,N,N,N] },
+  { size:'60×70',  del:'подрамник/EMS',    cells:[ptC(497.80,672.70),ptC(508.65,687.36),ptC(519.49,702.02),ptC(535.77,724.01),ptC(546.61,738.66),ptC(557.46,753.32),ptC(573.71,775.29),ptC(584.56,789.95),ptC(611.68,826.59),ptC(622.53,841.26),N,N,N] },
+  { size:'70×80',  del:'подрамник/EMS',    cells:[ptC(584.56,789.95),ptC(595.41,804.61),ptC(606.25,819.26),ptC(622.53,841.26),ptC(633.37,855.90),ptC(644.21,870.56),ptC(660.49,892.55),ptC(671.33,907.20),ptC(698.44,943.84),ptC(709.28,958.49),ptC(736.41,995.15),ptC(747.24,1009.79),ptC(758.09,1024.45)] },
+  { size:'80×90',  del:'тубус/EMS',        cells:[ptC(715.80,967.30),ptC(726.63,981.93),ptC(737.48,996.59),ptC(753.74,1018.57),ptC(764.59,1033.23),ptC(775.43,1047.88),ptC(791.70,1069.86),ptC(802.55,1084.53),ptC(829.66,1121.16),ptC(840.51,1135.82),ptC(867.62,1172.46),ptC(878.47,1187.12),ptC(889.31,1201.77)] },
+  { size:'80×90',  del:'подрамник/UPS',    cells:[ptC(823.17,1112.39),ptC(834.01,1127.04),ptC(844.86,1141.70),ptC(861.12,1163.68),ptC(871.96,1178.33),ptC(882.81,1192.99),ptC(899.08,1214.97),ptC(909.93,1229.63),ptC(937.05,1266.28),ptC(947.89,1280.93),ptC(974.99,1317.56),ptC(985.84,1332.22),ptC(996.69,1346.88)] },
+  { size:'80×100', del:'тубус/EMS',        cells:[ptC(835.07,1128.47),ptC(845.93,1143.15),ptC(856.77,1157.80),ptC(873.04,1179.78),ptC(883.89,1194.45),ptC(894.73,1209.09),ptC(911.00,1231.08),ptC(921.84,1245.73),ptC(948.96,1282.38),ptC(959.81,1297.04),ptC(986.92,1333.68),ptC(997.76,1348.32),ptC(1008.61,1362.99)] },
+  { size:'80×100', del:'подрамник/UPS',    cells:[ptC(942.46,1273.59),ptC(953.31,1288.26),ptC(964.15,1302.90),ptC(980.43,1324.90),ptC(991.27,1339.56),ptC(1002.12,1354.22),ptC(1018.38,1376.19),ptC(1029.22,1390.84),ptC(1056.34,1427.49),ptC(1067.19,1442.15),ptC(1094.30,1478.79),ptC(1105.15,1493.44),ptC(1115.99,1508.10)] },
+  { size:'100×120',del:'тубус/EMS',        cells:[ptC(996.69,1346.88),ptC(1007.53,1361.53),ptC(1018.38,1376.19),ptC(1034.65,1398.17),ptC(1045.49,1412.83),ptC(1056.34,1427.49),ptC(1072.61,1449.47),ptC(1083.46,1464.13),ptC(1110.56,1500.76),ptC(1121.41,1515.42),ptC(1148.52,1552.06),ptC(1159.37,1566.72),ptC(1170.21,1581.36)] },
+  { size:'120×140',del:'тубус/EMS',        cells:[ptC(1191.91,1610.69),ptC(1202.76,1625.35),ptC(1213.59,1639.99),ptC(1229.87,1661.98),ptC(1240.71,1676.64),ptC(1251.55,1691.29),ptC(1267.83,1713.28),ptC(1278.67,1727.93),ptC(1305.78,1764.57),ptC(1316.63,1779.23),ptC(1343.74,1815.86),ptC(1354.59,1830.53),ptC(1365.43,1845.17)] },
 ];
 const PT_COLS = 13; // 0Ф–12Ф
 
 function buildPT() {
-  const cols = Array.from({length: PT_COLS}, (_, i) => i);
+  const figCols = Array.from({length: PT_COLS}, (_, i) => i);
   const thead = `<thead><tr>
     <th class="size-col">Размер</th>
-    ${cols.map(i => `<th>${i}&thinsp;Ф</th>`).join('')}
+    <th class="del-col">Доставка</th>
+    ${figCols.map(i => `<th>${i}&thinsp;Ф</th>`).join('')}
   </tr></thead>`;
-  const tbody = PT_MATRIX.map(row => {
-    const cells = cols.map(i => {
-      const v = row.prices[i];
-      if (v == null) return `<td class="na">—</td>`;
-      const full = (v / 0.74).toFixed(2);
-      return `<td class="avail"><span class="sb-disc">$${v}</span><br><span class="sb-full">$${full}</span></td>`;
-    }).join('');
-    return `<tr><td class="size-lbl">${row.size}</td>${cells}</tr>`;
+
+  const sizeCount = {};
+  PT_ROWS.forEach(r => sizeCount[r.size] = (sizeCount[r.size]||0) + 1);
+  const sizeEmitted = {};
+
+  const tbody = PT_ROWS.map(row => {
+    const isFirst = !sizeEmitted[row.size];
+    sizeEmitted[row.size] = true;
+    const span = sizeCount[row.size];
+    const sizeCell = isFirst ? `<td class="size-lbl" rowspan="${span}">${row.size}</td>` : '';
+    const delCell = `<td class="del-lbl">${row.del}</td>`;
+    const cells = row.cells.map(c =>
+      c == null
+        ? `<td class="na">—</td>`
+        : `<td class="avail"><span class="sb-disc">$${c.d.toFixed(2)}</span><br><span class="sb-full">$${c.f.toFixed(2)}</span></td>`
+    ).join('');
+    return `<tr>${sizeCell}${delCell}${cells}</tr>`;
   }).join('');
+
   return `<div class="matrix-wrap">
     <div class="matrix-title">
       Portraithy — скидка 26%
-      <span class="note-badge">NEW · с 1 июля 2025</span>
       <span class="legend">зелёный = цена клиента · серый = без скидки</span>
     </div>
     <table class="matrix"><thead>${thead}</thead><tbody>${tbody}</tbody></table>

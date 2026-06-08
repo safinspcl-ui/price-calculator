@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расчет ЗП художника за нестандартный размер</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  padding: 16px;
+  min-height: 100vh;
+}
+.container { max-width: 500px; margin: 0 auto; }
+h1 { text-align: center; font-size: 1.25rem; margin-bottom: 18px; font-weight: 800; }
+.tabs {
+  display: flex;
+  background: #e2e5ec;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+.tab {
+  flex: 1; padding: 10px; border: none; border-radius: 9px;
+  background: transparent; cursor: pointer; font-weight: 700; font-size: 0.95rem;
+  color: #666; transition: all 0.2s;
+}
+.tab.active { background: #1a1a2e; color: #fff; }
+.card {
+  background: #fff; border-radius: 14px; padding: 18px;
+  margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.sec-label {
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #999; margin-bottom: 8px;
+}
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg-btn {
+  flex: 1; min-width: 90px; padding: 9px 6px; border: 2px solid #e2e5ec; border-radius: 10px;
+  background: #fff; cursor: pointer; font-size: 0.82rem; font-weight: 700;
+  color: #555; transition: all 0.15s; text-align: center;
+}
+.seg-btn.active { border-color: #1a1a2e; background: #1a1a2e; color: #fff; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fg { margin-bottom: 14px; }
+.fg:last-child { margin-bottom: 0; }
+label {
+  display: block; font-size: 0.73rem; font-weight: 800; color: #777;
+  margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+input[type=number], select {
+  width: 100%; padding: 11px 13px; border: 2px solid #e2e5ec; border-radius: 10px;
+  font-size: 1.05rem; font-weight: 600; outline: none; color: #1a1a2e;
+  transition: border-color 0.2s; background: #fafafa;
+  font-family: inherit; appearance: none;
+}
+select { cursor: pointer; }
+input[type=number]:focus, select:focus { border-color: #1a1a2e; background: #fff; }
+.result-card {
+  background: linear-gradient(145deg, #1a1a2e 0%, #0f3460 100%);
+  border-radius: 14px; padding: 22px; color: #fff; margin-bottom: 12px;
+}
+.res-label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; margin-bottom: 3px; }
+.res-price { font-size: 2.6rem; font-weight: 900; line-height: 1; margin-bottom: 5px; }
+.res-sub { font-size: 0.8rem; opacity: 0.55; margin-bottom: 18px; }
+.bd { background: rgba(255,255,255,0.11); border-radius: 10px; padding: 14px; }
+.bd-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.87rem; padding: 3px 0; opacity: 0.82; }
+.bd-row .nm { flex: 1; padding-right: 8px; }
+.bd-row.total { border-top: 1px solid rgba(255,255,255,0.2); margin-top: 8px; padding-top: 10px; font-weight: 800; font-size: 1rem; opacity: 1; }
+.empty { text-align: center; color: #bbb; font-size: 0.9rem; padding: 36px 0; }
+.warn { background: #fff8e1; border: 1.5px solid #ffc107; border-radius: 10px; padding: 11px 14px; font-size: 0.82rem; color: #7a5f00; margin-top: 10px; }
+.ratio-pill {
+  display: inline-block; background: rgba(255,255,255,0.15); border-radius: 6px;
+  padding: 2px 7px; font-size: 0.76rem; font-weight: 700; margin-left: 6px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Расчет ЗП художника за нестандартный размер</h1>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setShop('portraithy')">Portraithy</button>
+    <button class="tab" onclick="setShop('sambanis')">Sambanis</button>
+  </div>
+
+  <div id="style-card" class="card" style="display:none">
+    <div class="sec-label">Стиль</div>
+    <div class="seg" id="style-seg">
+      <button class="seg-btn active" onclick="setStyle('impressionism')">Импрессионизм</button>
+      <button class="seg-btn" onclick="setStyle('realism')">Реализм</button>
+      <button class="seg-btn" onclick="setStyle('renaissance')">Ренессанс</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row2" style="margin-bottom:14px">
+      <div class="fg" style="margin-bottom:0">
+        <label>Сторона А, см</label>
+        <input type="number" id="inp-w" placeholder="напр. 76" min="1" oninput="calc()">
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>Сторона Б, см</label>
+        <input type="number" id="inp-h" placeholder="напр. 91" min="1" oninput="calc()">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Количество фигур</label>
+      <input type="number" id="inp-n" value="0" min="0" oninput="calc()">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="fg" style="margin-bottom:0">
+      <label>Доплата клиента за доработку, $</label>
+      <select id="inp-revision" onchange="calc()">
+        <option value="0">Без доработки — 0</option>
+        <option value="30">$30 (категория 1)</option>
+        <option value="50">$50 (категория 2)</option>
+        <option value="70">$70 (категория 3)</option>
+        <option value="100">$100 (категория 4)</option>
+        <option value="150">$150 (категория 5)</option>
+        <option value="200">$200 (категория 6)</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="result-area">
+    <div class="card empty">Введите размеры выше</div>
+  </div>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+
+// Portraithy: ЗП художника по стандартным размерам, индекс массива = кол-во фигур
+const PT_ART = [
+  { w:13,  h:18,  p:[12] },
+  { w:15,  h:20,  p:[16] },
+  { w:20,  h:25,  p:[20,20] },
+  { w:25,  h:35,  p:[25,35,37] },
+  { w:30,  h:40,  p:[31,41,43] },
+  { w:40,  h:50,  p:[36,46,48,50,52] },
+  { w:50,  h:60,  p:[47,49,51,53,55,57,59,61] },
+  { w:60,  h:70,  p:[58,60,62,64,66,68,70,72,74,76] },
+  { w:70,  h:80,  p:[65,67,69,71,73,75,77,79,81,83,85,87,89] },
+  { w:80,  h:90,  p:[85,87,89,91,93,95,97,99,101,103,105,107,109] },
+  { w:80,  h:100, p:[90,92,94,96,98,100,102,104,106,108,110,112,114] },
+  { w:100, h:120, p:[120,122,124,126,128,130,132,134,136,138,140,142,144] },
+  { w:120, h:140, p:[140,142,144,146,148,150,152,154,156,158,160,162,164] },
+];
+// Размеры до и включая 60×70 (индексы 0-7) — доп. фигура сверх прайса +$10, крупнее — +$2
+const PT_SMALL_MAX_IDX = 7;
+
+// Sambanis: ЗП художника = base (покрывает 0 и 1 фигуру) + (n-1) × шаг для n ≥ 2
+const SB_ART = {
+  impressionism: { step:15, sizes:[
+    { w:25,  h:35,  base:60 },
+    { w:30,  h:40,  base:66 },
+    { w:40,  h:50,  base:86 },
+    { w:50,  h:60,  base:110 },
+    { w:60,  h:70,  base:137 },
+    { w:70,  h:80,  base:157 },
+    { w:80,  h:90,  base:175 },
+    { w:80,  h:100, base:195 },
+    { w:100, h:120, base:240 },
+    { w:120, h:140, base:300 },
+  ]},
+  realism: { step:20, sizes:[
+    { w:25,  h:35,  base:70 },
+    { w:30,  h:40,  base:80 },
+    { w:40,  h:50,  base:105 },
+    { w:50,  h:60,  base:130 },
+    { w:60,  h:70,  base:155 },
+    { w:70,  h:80,  base:190 },
+    { w:80,  h:90,  base:225 },
+    { w:80,  h:100, base:230 },
+    { w:100, h:120, base:250 },
+    { w:120, h:140, base:350 },
+  ]},
+  renaissance: { step:20, sizes:[
+    { w:25,  h:35,  base:88 },
+    { w:30,  h:40,  base:97 },
+    { w:40,  h:50,  base:115 },
+    { w:50,  h:60,  base:153 },
+    { w:60,  h:70,  base:190 },
+    { w:70,  h:80,  base:231 },
+    { w:80,  h:90,  base:257 },
+    { w:80,  h:100, base:275 },
+    { w:100, h:120, base:300 },
+    { w:120, h:140, base:400 },
+  ]},
+};
+
+// Доработка для клиента → ЗП художнику (одинаково для всех магазинов и стилей)
+const REVISION = { 0:0, 30:10, 50:20, 70:25, 100:30, 150:35, 200:40 };
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+const st = { shop:'portraithy', style:'impressionism' };
+
+// ── UI SETTERS ───────────────────────────────────────────────────────────────
+function setShop(s) {
+  st.shop = s;
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===(s==='portraithy'?0:1)));
+  document.getElementById('style-card').style.display = s==='sambanis' ? 'block' : 'none';
+  calc();
+}
+function setStyle(s) {
+  st.style = s;
+  document.querySelectorAll('#style-seg .seg-btn').forEach((b,i) =>
+    b.classList.toggle('active', ['impressionism','realism','renaissance'][i]===s));
+  calc();
+}
+
+// ── LOGIC ────────────────────────────────────────────────────────────────────
+function dist(w, h, sw, sh) {
+  return Math.min(Math.abs(w-sw)+Math.abs(h-sh), Math.abs(w-sh)+Math.abs(h-sw));
+}
+
+function findClosest(sizes, w, h) {
+  let best=-1, bestD=Infinity, bestP=-Infinity;
+  sizes.forEach((s,i) => {
+    const d = dist(w, h, s.w, s.h);
+    const p = s.w + s.h;
+    if (d < bestD || (d===bestD && p > bestP)) { best=i; bestD=d; bestP=p; }
+  });
+  return best;
+}
+
+// Расчёт ЗП за фигуры для Portraithy: по матрице, либо экстраполяция за её пределами
+function ptFigureCost(idx, sz, n) {
+  const base = sz.p[0];
+  const maxIdx = sz.p.length - 1;
+  if (n <= maxIdx) {
+    return { cost: sz.p[n] - base, extra: 0, step: 0 };
+  }
+  const extraStep = idx <= PT_SMALL_MAX_IDX ? 10 : 2;
+  const extra = n - maxIdx;
+  return { cost: (sz.p[maxIdx] - base) + extra * extraStep, extra, step: extraStep };
+}
+
+// Расчёт ЗП за фигуры для Sambanis: первая фигура включена в базу, далее +шаг за фигуру
+function sbFigureCost(style, n) {
+  if (n <= 1) return 0;
+  return (n - 1) * style.step;
+}
+
+function $ (id) { return document.getElementById(id); }
+const fmt = v => '$' + Math.round(v);
+
+function calc() {
+  const w = parseFloat($('inp-w').value);
+  const h = parseFloat($('inp-h').value);
+  const n = Math.max(0, parseInt($('inp-n').value) || 0);
+  const revisionPay = parseInt($('inp-revision').value) || 0;
+  const revisionArt = REVISION[revisionPay] || 0;
+
+  if (!w || !h || w<=0 || h<=0) {
+    $('result-area').innerHTML = '<div class="card empty">Введите размеры выше</div>';
+    return;
+  }
+
+  let idx, sz, base, figCost, figLabel, warn = '';
+
+  if (st.shop === 'portraithy') {
+    idx = findClosest(PT_ART, w, h);
+    sz  = PT_ART[idx];
+    base = sz.p[0];
+    const fig = ptFigureCost(idx, sz, n);
+    figCost = fig.cost;
+    if (n === 0) {
+      figLabel = 'без фигур';
+    } else if (fig.extra === 0) {
+      figLabel = `${n} фиг. по таблице (${fmt(sz.p[n])} − ${fmt(base)})`;
+    } else {
+      const tableMaxIdx = sz.p.length - 1;
+      figLabel = `${tableMaxIdx} фиг. по таблице + ${fig.extra} доп. × ${fmt(fig.step)}`;
+      warn = `<div class="warn">⚠ ${fig.extra} фигур(ы) сверх таблицы для размера ${sz.w}×${sz.h} — добавлено ${fmt(fig.extra*fig.step)} (${fig.extra} × ${fmt(fig.step)})</div>`;
+    }
+  } else {
+    const style = SB_ART[st.style];
+    idx = findClosest(style.sizes, w, h);
+    sz  = style.sizes[idx];
+    base = sz.base;
+    figCost = sbFigureCost(style, n);
+    if (n <= 1) {
+      figLabel = 'включено в базу (0–1 фигура)';
+    } else {
+      figLabel = `${n} фиг.: 1-я в базе + ${n-1} доп. × ${fmt(style.step)}`;
+    }
+  }
+
+  const ratio = (w + h) / (sz.w + sz.h);
+  const scaledBase = Math.round(base * ratio);
+  const total = scaledBase + figCost + revisionArt;
+
+  const ratioDir = ratio > 1 ? '▲' : ratio < 1 ? '▼' : '=';
+  const ratioColor = ratio > 1 ? '#4caf50' : ratio < 1 ? '#f44336' : '#fff';
+
+  $('result-area').innerHTML = `
+    <div class="result-card">
+      <div class="res-label">ЗП художнику</div>
+      <div class="res-price">${fmt(total)}</div>
+      <div class="res-sub">
+        Ближайший стандарт: <strong>${sz.w}×${sz.h} см</strong>
+        <span class="ratio-pill" style="color:${ratioColor}">${ratioDir} ×${ratio.toFixed(3)}</span>
+      </div>
+      <div class="bd">
+        <div class="bd-row">
+          <span class="nm">База за размер (при ${sz.w}×${sz.h})</span>
+          <span>${fmt(base)}</span>
+        </div>
+        <div class="bd-row">
+          <span class="nm">× коэф. (${w}+${h}) / (${sz.w}+${sz.h})</span>
+          <span>${fmt(scaledBase)}</span>
+        </div>
+        ${figCost!==0 ? `<div class="bd-row">
+          <span class="nm">Фигуры: ${figLabel}</span>
+          <span>+${fmt(figCost)}</span>
+        </div>` : ''}
+        ${revisionArt>0 ? `<div class="bd-row">
+          <span class="nm">Доработка (доплата клиента $${revisionPay})</span>
+          <span>+${fmt(revisionArt)}</span>
+        </div>` : ''}
+        <div class="bd-row total">
+          <span>ИТОГО</span>
+          <span>${fmt(total)}</span>
+        </div>
+      </div>
+    </div>
+    ${warn}
+  `;
+}
+</script>
+</body>
+</html>

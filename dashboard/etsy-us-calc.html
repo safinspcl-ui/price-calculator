@@ -252,23 +252,34 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
   <!-- Доработка дизайнера -->
   <div class="section">
     <h2>Доработка дизайнера (доп. услуга)</h2>
-    <div class="note" style="margin-bottom:10px">Допродажа на заказ. Конверсия — % от оплаченных картин, которые покупают доработку этой категории. Доход/затраты масштабируются вместе с объёмом продаж в каждом сценарии.</div>
+    <div class="note" style="margin-bottom:10px">Допродажа на заказ. Конверсия — % от оплаченных картин, которые покупают доработку этой категории. Доход/затраты масштабируются вместе с объёмом продаж в каждом сценарии.<br>* "Ожид. доход с заказа" — вероятностное среднее (доход × конверсию) на 1 заказ картины, включая те, что ничего не докупили — именно это число умножается на кол-во картин в P&L.</div>
     <table class="price-table">
       <thead>
         <tr>
           <th style="text-align:left">Категория</th>
           <th>Цена $</th>
           <th>Себест. $</th>
+          <th>Марж. %</th>
           <th>Конв. %</th>
         </tr>
       </thead>
       <tbody id="design-body"></tbody>
       <tfoot>
         <tr style="border-top:1px solid #2d3748">
-          <td style="color:#e2e8f0;font-weight:600;padding:6px 5px">На заказ, в среднем</td>
-          <td style="text-align:right;padding:6px 5px;color:#76e4f7;font-weight:600" id="dsg_avg_rev">—</td>
-          <td style="text-align:right;padding:6px 5px;color:#fc8181;font-weight:600" id="dsg_avg_cost">—</td>
-          <td style="text-align:right;padding:6px 5px;color:#68d391;font-weight:600" id="dsg_avg_conv">—</td>
+          <td colspan="3" style="color:#4a5568;font-size:.72rem;padding:6px 5px">Конверсия, суммарно (% заказов с допродажей)</td>
+          <td colspan="2" style="text-align:right;padding:6px 5px;color:#fbd38d;font-weight:700" id="dsg_avg_conv">—</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="color:#4a5568;font-size:.72rem;padding:4px 5px">Средний чек допродажи (если купили)</td>
+          <td colspan="2" style="text-align:right;padding:4px 5px;color:#76e4f7;font-weight:700" id="dsg_check">—</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="color:#4a5568;font-size:.72rem;padding:4px 5px">Маржа допродажи, % (средневзв.)</td>
+          <td colspan="2" style="text-align:right;padding:4px 5px;color:#68d391;font-weight:700" id="dsg_margin_pct">—</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="color:#4a5568;font-size:.72rem;padding:4px 5px">Ожид. доход с 1 заказа картины*</td>
+          <td colspan="2" style="text-align:right;padding:4px 5px;color:#a0aec0;font-weight:600" id="dsg_avg_rev">—</td>
         </tr>
       </tfoot>
     </table>
@@ -408,6 +419,7 @@ function buildDesignTable() {
       <td>Категория ${c}</td>
       <td><input type="number" id="dp_${i}" value="${DEF_DSG_PRICE[i]}" step="0.01" oninput="calc()"></td>
       <td><input type="number" id="dc_${i}" value="${DEF_DSG_COST[i]}" step="0.01" oninput="calc()"></td>
+      <td class="calc" id="dm_${i}">—</td>
       <td><input type="number" id="dv_${i}" value="${DEF_DSG_CONV[i]}" step="0.01" oninput="calc()"></td>
     </tr>`).join('');
 }
@@ -499,15 +511,29 @@ function calc() {
   const avgCheck = totUnits > 0 ? totRev/totUnits : 0;
   $('avg_check').textContent  = avgCheck > 0 ? fmtD(avgCheck) : '—';
 
-  // Design upsell averages per order
+  // Design upsell: per-category margin display
   const dPrices = DSG_CATS.map((_,i)=>v('dp_'+i));
   const dCosts  = DSG_CATS.map((_,i)=>v('dc_'+i));
   const dConvs  = DSG_CATS.map((_,i)=>v('dv_'+i)/100);
+  DSG_CATS.forEach((_,i) => {
+    const mgPct = dPrices[i] > 0 ? (dPrices[i]-dCosts[i])/dPrices[i]*100 : 0;
+    const el = $('dm_'+i);
+    el.textContent = mgPct.toFixed(1)+'%';
+    el.style.color = mgPct >= 0 ? '#68d391' : '#fc8181';
+  });
+
+  // Ожидаемый доход/себестоимость на 1 заказ картины (вероятностное среднее, используется для масштабирования)
   const dAvgRev  = DSG_CATS.reduce((s,_,i)=>s+dPrices[i]*dConvs[i],0);
   const dAvgCost = DSG_CATS.reduce((s,_,i)=>s+dCosts[i]*dConvs[i],0);
-  $('dsg_avg_rev').textContent  = fmtD(dAvgRev);
-  $('dsg_avg_cost').textContent = fmtD(dAvgCost);
-  $('dsg_avg_conv').textContent = (dConvs.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%';
+  const totalConv = dConvs.reduce((a,b)=>a+b,0);
+  // Средний чек допродажи: доход, делённый на долю заказов, которые купили хоть что-то
+  const dCheck = totalConv > 0 ? dAvgRev/totalConv : 0;
+  const dMarginPct = dAvgRev > 0 ? (dAvgRev-dAvgCost)/dAvgRev*100 : 0;
+
+  $('dsg_avg_conv').textContent   = (totalConv*100).toFixed(1)+'%';
+  $('dsg_check').textContent      = dCheck > 0 ? fmtD(dCheck) : '—';
+  $('dsg_margin_pct').textContent = dMarginPct.toFixed(1)+'%';
+  $('dsg_avg_rev').textContent    = fmtD(dAvgRev)+' / '+fmtD(dAvgCost)+' себест.';
 
   // Per-store scenarios
   const Sa = [0,1,2,3].map(i => buildStoreScenario(i, manual1, prices, varcos, units4, infra, dAvgRev, dAvgCost));
